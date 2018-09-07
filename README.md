@@ -1,2 +1,0 @@
-# SampleReactApplication
-Created with CodeSandbox
