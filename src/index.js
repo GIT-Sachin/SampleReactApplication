@@ -1,18 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import {
-  Navbar,
-  NavbarBrand,
-  NavbarNav,
-  NavbarToggler,
-  Collapse,
-  NavItem,
-  NavLink,
-  Dropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem
-} from "react";
 
 import "./styles.css";
 import "./common_reports.css";
