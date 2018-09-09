@@ -1,16 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import WebPageHeading from "./components/WebPageHeading"
+import WebPageSection from "./components/WebPageSection"
 
-import "./styles.css";
-import "./common_reports.css";
-import "./common_utils.css";
-import "./foundation-datepicker.css";
-import "./foundation.css";
-import "./jquery-ui.css";
-import "./normalize.css";
-import "./selectric.css";
-import "./styles.css";
-import "./tableInfo.css";
+import "./css/styles.css";
+import "./css/common_utils.css";
+import "./css/foundation-datepicker.css";
+import "./css/foundation.css";
+import "./css/styles.css";
 
 const MENUITEMS = [
   { id: "quoteheader", menuname: "Quote Header" },
@@ -21,137 +18,49 @@ const MENUITEMS = [
   { id: "factoryaccessories", menuname: " Factory Accessories" }
 ];
 
-const ACCESSORIES = [
-  {
-    acc_code: "acc1",
-    acc_desc: "acc1 desc",
-    acc_price: "acc1 price",
-    acc_type: "standard"
-  },
-  {
-    acc_code: "acc2",
-    acc_desc: "acc1 desc",
-    acc_price: "acc1 price",
-    acc_type: "standard"
-  },
-  {
-    acc_code: "acc3",
-    acc_desc: "acc1 desc",
-    acc_price: "acc1 price",
-    acc_type: "standard"
-  }
-];
-
 class WebPage extends React.Component {
-  render() {
-    return (
-      <div>
-        <div className="row expanded titlebar_header">
-          <WebPageHeading />
-        </div>
-        {MENUITEMS.map(item => (
-          <div key={"sectionheading" + item.id}>
-            <WebPageSection sectiondetails={item} />
-          </div>
-        ))}
-      </div>
-    );
-  }
-}
-
-class WebPageHeading extends React.Component {
-  render() {
-    return (
-      <div className="contentHeading">
-        <ul>
-          {MENUITEMS.map(item => (
-            <li key={"#" + item.id}>
-              <a href={"#" + item.id}>{item.menuname}</a>
-            </li>
-          ))}
-        </ul>
-      </div>
-    );
-  }
-}
-
-class WebPageSection extends React.Component {
-  render() {
-    let sectionbody;
-    if (this.props.sectiondetails.id === "standardaccessories") {
-      sectionbody = <StandardAccessories />;
+  constructor(){
+    super();
+    this.state={
+      quotation:{
+        quotationHeader:{
+          accountCode:null,
+          costCenterCode:null,
+          quatationTemplate:null,
+          term:null,
+          distance:null
+        },
+        vehicleDetails:{
+          make:null,
+          model:null,
+          variant:null,
+          category:null
+        },
+        accessories:{
+          accessoryCode:null,
+          accessoryDesc:null,
+          accessoryType:null,
+        }
+      }}
     }
-    if (this.props.sectiondetails.id === "quoteheader") {
-      sectionbody = (
-        <QuoteHeader
-          onAccountChange={this.handleAccountSearch}
-          onCCSearch={this.handleCCSearch}
-          onQuoteTemplateSearch={this.handleQuoteTemplateSearch}
-        />
+    render() {
+      return (
+        <React.Fragment>
+          <div className="row expanded titlebar_header">
+            <WebPageHeading menuitems={this.props.menuitems}/>
+          </div>
+          <div >
+            <WebPageSection
+              sectiondetails={this.props.menuitems[0]}
+              quoteheader={this.state.quotation.quotationHeader} />
+          </div>
+        </React.Fragment>
       );
     }
-    return (
-      <div className="webPageSection">
-        <div
-          className="row sectionheading sectionheader"
-          id={this.props.sectiondetails.id}
-        >
-          <h6>{this.props.sectiondetails.menuname}</h6>
-        </div>
-        <div className="row sectionbody">{sectionbody}</div>
-      </div>
-    );
   }
-}
 
-function StandardAccessories(props) {
-  const rows = [];
-  ACCESSORIES.forEach(acc => {
-    if (acc.acc_type === "standard") {
-      rows.push(acc);
-    }
-  });
-  return (
-    <div>
-      {rows.map(acc1 => (
-        <div className="row column borderrow" key={acc1.acc_code}>
-          <div className="small-3 column ">{acc1.acc_code}</div>
-          <div className="small-3 column  ">{acc1.acc_desc}</div>
-          <div className="small-3 column  ">{acc1.acc_price}</div>
-          <div className="small-3 column  ">{acc1.acc_type}</div>
-        </div>
-      ))}
-    </div>
+  const rootElement = document.getElementById("root");
+  ReactDOM.render(
+    <WebPage  menuitems={MENUITEMS}/>,
+    rootElement
   );
-}
-
-function QuoteHeader(props) {
-  return (
-    <div className="row column">
-      <div className="small-4 column">
-        <input
-          onChange
-          type="text"
-          placeholder="Start typing Account Name or Number/Code"
-        />
-      </div>
-      <div className="small-4 column">
-        <input
-          className="small-4 column"
-          type="text"
-          placeholder="Start typing Cost Centre"
-        />
-      </div>
-      <div className="small-4 column">
-        <input
-          className="small-4 column"
-          type="text"
-          placeholder="Start typing Quotation Template"
-        />
-      </div>
-    </div>
-  );
-}
-
-const rootElement = document.getElementById("root");
-ReactDOM.render(<WebPage sectiondetails={MENUITEMS} />, rootElement);
